@@ -1,0 +1,61 @@
+name: "John Doe"
+
+address:
+  - "Street 9"
+  - "01234 City"
+  - "Country"
+
+ico: "0123456789"
+dic: "0987654321"
+icdph: "SK0987654321"
+
+phone: "0999123456"
+email: "john.doe@gmail.com"
+
+numbering: "YYYYccc"
+
+signature: "signature.png"
+
+default_curremcy: "EUR"
+default_bank_account: "acc1"
+bank_accounts:
+  acc1:
+    iban: "SK11 2222 3333 4444 5555 6666"
+    swift: "ABCDEFGH"
+
+
+clients:
+  client1:
+    name: "Client 1"
+    address:
+      - "Street 1"
+      - "01234 City"
+      - "Slovensko"
+    ico: "123456789"
+    dic: "987654321"
+    icdph: "SK987654321"
+    price: 20
+    projects:
+      Abc áéí:
+        aliases:
+          - abc
+          - bbc
+        type: "mobile"
+
+  c2:
+    name: "Client 2"
+    address:
+      - "Street 2"
+      - "01234 City"
+      - "Country"
+    ico: "123456789"
+    dic: "987654321"
+    icdph: "SK987654321"
+    price: 10
+    projects:
+      Some Tracker:
+        aliases:
+          - "some tracker"
+        type: "desktop"
+      Hello World:
+        type: "mobile"

@@ -40,6 +40,10 @@ class DocumentBuilder(object):
 
         # create documents
         for temp_doc in temp_docs:
+            # ignore documents with no item
+            if len(temp_doc.items) < 1:
+                continue
+
             doc_name = self._check_format_doc_name(date, len(docs) + 1)
             docs.append(Document(
                 number=doc_name,

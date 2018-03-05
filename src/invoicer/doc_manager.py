@@ -86,7 +86,7 @@ def _strip_yaml_from_name(file_name):
 
 
 def _create_doc_pdf_name(doc_number):
-    return str(doc_number) + PDF_PATH
+    return str(doc_number) + PDF_EXTENSION
 
 
 def _move(from_state, to_state, doc_number):

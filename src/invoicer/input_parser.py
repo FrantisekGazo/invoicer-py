@@ -11,7 +11,7 @@ def parse(file_path):
         rows = csv.reader(csvfile, delimiter=' ', quotechar='|')
         for row in rows:
             parts_count = len(row)
-            if parts_count <= 0 or parts_count < 2:
+            if parts_count < 2:
                 continue
 
             number = float(row[0])

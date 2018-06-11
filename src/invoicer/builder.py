@@ -124,7 +124,7 @@ class DocumentBuilder(object):
         elif isinstance(record, PriceRecord):
             return Item(
                 name=self.resources.get_string('item_name_ks', project.name),
-                amount=record.price,
+                amount=1,
                 unit=Unit.KS,
                 price=record.price
             )

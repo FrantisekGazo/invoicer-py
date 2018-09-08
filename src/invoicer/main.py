@@ -26,32 +26,32 @@ def run(resources):
         doc_manager.make_pending(doc)
 
 
-def sent(resources, doc_number):
+def sent(resources):
     doc_manager = DocManager(resources)
-    doc_manager.move_to_sent(doc_number)
+    doc_manager.move_to_sent()
 
 
-def paid(resources, doc_number):
+def paid(resources):
     doc_manager = DocManager(resources)
-    doc_manager.move_to_paid(doc_number)
+    doc_manager.move_to_paid()
 
 
 def main(debug=False):
     parser = argparse.ArgumentParser()
     parser.add_argument('-r', '--run', action='store_true',
                         help="Create new documents")
-    parser.add_argument('-s', '--sent', nargs=1, metavar="DOC_NUMBER",
+    parser.add_argument('-s', '--sent', action='store_true',
                         help="Move the document with given number to the sent state")
-    parser.add_argument('-p', '--paid', nargs=1, metavar="DOC_NUMBER",
+    parser.add_argument('-p', '--paid', action='store_true',
                         help="Move the document with given number to the paid state")
     args = parser.parse_args()
 
     if args.run:
         run(ResourceManager(debug))
-    elif args.sent is not None:
-        sent(ResourceManager(debug), args.sent[0])
-    elif args.paid is not None:
-        paid(ResourceManager(debug), args.paid[0])
+    elif args.sent:
+        sent(ResourceManager(debug))
+    elif args.paid:
+        paid(ResourceManager(debug))
 
 
 if __name__ == "__main__":

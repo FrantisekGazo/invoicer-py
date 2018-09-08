@@ -9,12 +9,14 @@ BASE_PATH = './out'
 DOC_PATH = 'doc'
 PDF_PATH = 'pdf'
 
-PENDING_PATH = 'pending'
-SENT_PATH = 'sent'
-PAID_PATH = 'paid'
-
 YAML_EXTENSION = '.yaml'
 PDF_EXTENSION = '.pdf'
+
+
+class DocState:
+    PENDING = 'pending'
+    SENT = 'sent'
+    PAID = 'paid'
 
 
 class DocManager(object):
@@ -22,8 +24,8 @@ class DocManager(object):
         self._resources = resources
 
     def make_pending(self, doc):
-        doc_dir_path = _prepare_dir(DOC_PATH, PENDING_PATH)
-        pdf_dir_path = _prepare_dir(PDF_PATH, PENDING_PATH)
+        doc_dir_path = _prepare_dir(DOC_PATH, DocState.PENDING)
+        pdf_dir_path = _prepare_dir(PDF_PATH, DocState.PENDING)
 
         _write_doc_to_yaml(doc_dir_path, doc)
 
@@ -33,24 +35,25 @@ class DocManager(object):
 
         print("%s was created" % doc.number)
 
-    def move_to_sent(self, doc_number):
-        _move(PENDING_PATH, SENT_PATH, doc_number)
-        print("%s was moved to sent state" % doc_number)
+    def move_to_sent(self):
+        doc_numbers = self.get_doc_numbers_from(DocState.PENDING)
+        for doc_number in doc_numbers:
+            _move(DocState.PENDING, DocState.SENT, doc_number)
+            print("%s was moved to sent state" % doc_number)
 
-    def move_to_paid(self, doc_number):
-        _move(SENT_PATH, PAID_PATH, doc_number)
-        print("%s was moved to paid state" % doc_number)
+    def move_to_paid(self):
+        doc_numbers = self.get_doc_numbers_from(DocState.SENT)
+        for doc_number in doc_numbers:
+            _move(DocState.SENT, DocState.PAID, doc_number)
+            print("%s was moved to paid state" % doc_number)
 
     def clear_pending(self):
-        shutil.rmtree(_prepare_dir(DOC_PATH, PENDING_PATH))
-        shutil.rmtree(_prepare_dir(PDF_PATH, PENDING_PATH))
+        shutil.rmtree(_prepare_dir(DOC_PATH, DocState.PENDING))
+        shutil.rmtree(_prepare_dir(PDF_PATH, DocState.PENDING))
         print("Pending were cleared")
 
     def get_latest_doc_name(self):
-        doc_sent_path = _prepare_dir(DOC_PATH, SENT_PATH)
-        doc_paid_path = _prepare_dir(DOC_PATH, PAID_PATH)
-        doc_files = [_strip_yaml_from_name(f) for f in os.listdir(doc_sent_path)] + \
-                    [_strip_yaml_from_name(f) for f in os.listdir(doc_paid_path)]
+        doc_files = self.get_doc_numbers_from(DocState.SENT) + self.get_doc_numbers_from(DocState.PAID)
 
         if len(doc_files) > 0:
             doc_files.sort()
@@ -58,9 +61,14 @@ class DocManager(object):
         else:
             return None
 
+    def get_doc_numbers_from(self, state):
+        doc_path = _prepare_dir(DOC_PATH, state)
+        doc_numbers = [_strip_yaml_from_name(f) for f in os.listdir(doc_path)]
+        return doc_numbers
 
-def _prepare_dir(type, state):
-    dir_path = os.path.join(BASE_PATH, type, state)
+
+def _prepare_dir(file_type, doc_state):
+    dir_path = os.path.join(BASE_PATH, file_type, doc_state)
     if not os.path.exists(dir_path):
         os.makedirs(dir_path)
     return dir_path

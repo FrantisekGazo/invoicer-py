@@ -7,7 +7,7 @@ setup(
     author='František Gažo',
     author_email='frantisek.gazo.313@gmail.com',
     name='invoicer',
-    version='0.1.0-beta33',
+    version='0.1.0',
     description="""
     Invoicer
     """,

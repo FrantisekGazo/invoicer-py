@@ -122,12 +122,20 @@ class DocumentBuilder(object):
                 price=project.price
             )
         elif isinstance(record, PriceRecord):
-            return Item(
-                name=self.resources.get_string('item_name_ks', project.name),
-                amount=1,
-                unit=Unit.KS,
-                price=record.price
-            )
+            if project.type == ProjectType.GENERAL:
+                return Item(
+                    name=self.resources.get_string('item_name_general'),
+                    amount=1,
+                    unit=Unit.KS,
+                    price=record.price
+                )
+            else:
+                return Item(
+                    name=self.resources.get_string('item_name_ks', project.name),
+                    amount=1,
+                    unit=Unit.KS,
+                    price=record.price
+                )
 
     def _combine_same_items(self, items_list):
         items_map = {}

@@ -24,8 +24,9 @@ class Currency(object):
 class ProjectType(object):
     MOBILE = 'mobile'
     DESKTOP = 'desktop'
+    GENERAL = 'general'
 
-    all = [MOBILE, DESKTOP]
+    all = [MOBILE, DESKTOP, GENERAL]
 
     @staticmethod
     def validate(name):
@@ -157,12 +158,14 @@ class DiscountRecord(Record):
 
 
 class HoursRecord(Record):
-    def __init__(self, project_name, hours):
+    def __init__(self, client_name, project_name, hours):
+        self.client_name = client_name
         self.project_name = project_name
         self.hours = hours
 
 
 class PriceRecord(Record):
-    def __init__(self, project_name, price):
+    def __init__(self, client_name, project_name, price):
+        self.client_name = client_name
         self.project_name = project_name
         self.price = price

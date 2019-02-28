@@ -36,6 +36,8 @@ clients:
     icdph: "SK987654321"
     price: 20
     projects:
+      all:
+        type: "general"
       Abc áéí:
         aliases:
           - abc

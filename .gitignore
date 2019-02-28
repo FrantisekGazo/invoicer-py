@@ -3,3 +3,4 @@ dist/
 *.egg-info/
 real/
 venv/
+example/out/

@@ -25,8 +25,9 @@ class ProjectType(object):
     MOBILE = 'mobile'
     DESKTOP = 'desktop'
     GENERAL = 'general'
+    PROVISION = 'provision'
 
-    all = [MOBILE, DESKTOP, GENERAL]
+    all = [MOBILE, DESKTOP, GENERAL, PROVISION]
 
     @staticmethod
     def validate(name):

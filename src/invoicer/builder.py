@@ -129,6 +129,13 @@ class DocumentBuilder(object):
                     unit=Unit.KS,
                     price=record.price
                 )
+            if project.type == ProjectType.PROVISION:
+                return Item(
+                    name=self.resources.get_string('item_name_provision'),
+                    amount=1,
+                    unit=Unit.KS,
+                    price=record.price
+                )
             else:
                 return Item(
                     name=self.resources.get_string('item_name_ks', project.name),

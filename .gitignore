@@ -4,3 +4,4 @@ dist/
 real/
 venv/
 example/out/
+*.pyc

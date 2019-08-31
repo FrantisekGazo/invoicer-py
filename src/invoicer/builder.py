@@ -1,5 +1,6 @@
 from model import *
 from datetime import datetime, timedelta
+from resource import ResourceManager
 
 
 def _last_day_of_month(any_date):
@@ -12,9 +13,8 @@ def _last_day_of_previous_month(any_date):
 
 
 class DocumentBuilder(object):
-    def __init__(self, base, resources, latest_doc_name):
+    def __init__(self, base, latest_doc_name):
         self.base = Base(base)
-        self.resources = resources
         self.latest_doc_name = latest_doc_name
 
     def build(self, records, date=None):
@@ -100,57 +100,58 @@ class DocumentBuilder(object):
     def _find_items(self, records, client):
         items = []
         used_records = []
+        resources = ResourceManager(res_type=client.type)
 
         for record in records:
             if isinstance(record, PriceRecord) or isinstance(record, HoursRecord):
                 for (_, project) in client.projects.iteritems():
                     if record.project_name in project.aliases:
-                        items.append(self._map_record_to_item(project, record))
+                        items.append(self._map_record_to_item(project, record, resources))
                         used_records.append(record)
                         break
 
         for record in used_records:
             records.remove(record)
-        return self._combine_same_items(items)
+        return self._combine_same_items(items, resources)
 
-    def _map_record_to_item(self, project, record):
+    def _map_record_to_item(self, project, record, resources):
         if isinstance(record, HoursRecord):
             return Item(
-                name=self.resources.get_string('item_name_' + project.type, project.name),
+                name=resources.get_string('item_name_' + project.type, project.name),
                 amount=record.hours,
-                unit=Unit.HOUR,
+                unit=resources.get_string('unit_hod'),
                 price=project.price
             )
         elif isinstance(record, PriceRecord):
             if project.type == ProjectType.GENERAL:
                 return Item(
-                    name=self.resources.get_string('item_name_general'),
+                    name=resources.get_string('item_name_general'),
                     amount=1,
-                    unit=Unit.KS,
+                    unit=resources.get_string('unit_ks'),
                     price=record.price
                 )
             if project.type == ProjectType.PROVISION:
                 return Item(
-                    name=self.resources.get_string('item_name_provision'),
+                    name=resources.get_string('item_name_provision'),
                     amount=1,
-                    unit=Unit.KS,
+                    unit=resources.get_string('unit_ks'),
                     price=record.price
                 )
             else:
                 return Item(
-                    name=self.resources.get_string('item_name_ks', project.name),
+                    name=resources.get_string('item_name_ks', project.name),
                     amount=1,
-                    unit=Unit.KS,
+                    unit=resources.get_string('unit_ks'),
                     price=record.price
                 )
 
-    def _combine_same_items(self, items_list):
+    def _combine_same_items(self, items_list, resources):
         items_map = {}
 
         for item in items_list:
             if item.name in items_map:
                 old = items_map[item.name]
-                if item.unit == Unit.HOUR:
+                if item.unit == resources.get_string('unit_hod'):
                     items_map[item.name] = Item(
                         name=item.name,
                         price=item.price,

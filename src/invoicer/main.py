@@ -8,8 +8,8 @@ import input_parser
 import os
 
 
-def run(resources):
-    doc_manager = DocManager(resources)
+def run():
+    doc_manager = DocManager()
     latest_doc_name = doc_manager.get_latest_doc_name()
 
     # retrieve input
@@ -17,7 +17,7 @@ def run(resources):
     records = input_parser.parse(os.path.abspath('IN'))
 
     # prepare documents
-    builder = DocumentBuilder(load_yaml('base.yaml'), resources, latest_doc_name)
+    builder = DocumentBuilder(load_yaml('base.yaml'), latest_doc_name)
     docs = builder.build(records)
 
     # create documents
@@ -26,13 +26,13 @@ def run(resources):
         doc_manager.make_pending(doc)
 
 
-def sent(resources):
-    doc_manager = DocManager(resources)
+def sent():
+    doc_manager = DocManager()
     doc_manager.move_to_sent()
 
 
-def paid(resources):
-    doc_manager = DocManager(resources)
+def paid():
+    doc_manager = DocManager()
     doc_manager.move_to_paid()
 
 
@@ -46,12 +46,13 @@ def main(debug=False):
                         help="Move the document with given number to the paid state")
     args = parser.parse_args()
 
+    ResourceManager.debug = debug
     if args.run:
-        run(ResourceManager(debug))
+        run()
     elif args.sent:
-        sent(ResourceManager(debug))
+        sent()
     elif args.paid:
-        paid(ResourceManager(debug))
+        paid()
 
 
 if __name__ == "__main__":

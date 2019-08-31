@@ -5,13 +5,24 @@ from pkg_resources import resource_filename
 from util import load_yaml
 
 
+class ResourceType(object):
+    DEFAULT = None
+    EN = 'en'
+
+
 class ResourceManager(object):
-    def __init__(self, debug=False):
-        if debug:  # this is only for local testing
+    debug = False
+
+    def __init__(self, res_type=ResourceType.DEFAULT):
+        if ResourceManager.debug:  # this is only for local testing
             self.res_path = '../src/invoicer/res'
         else:  # this is used in release
             self.res_path = resource_filename("invoicer", "res")
-        self.data = load_yaml(self.resource_path('values/strings.yaml'))
+
+        path = 'values/strings.yaml'
+        if res_type is not None:
+            path = 'values/strings-%s.yaml' % res_type
+        self.data = load_yaml(self.resource_path(path))
 
     def resource_path(self, relative_path):
         return os.path.join(self.res_path, relative_path)

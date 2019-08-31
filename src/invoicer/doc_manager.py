@@ -1,6 +1,7 @@
 import os
 import yaml
 import shutil
+from resource import ResourceManager
 from pdf_writer import PdfWriter
 from serializer import doc_to_object, object_to_doc
 
@@ -20,17 +21,16 @@ class DocState:
 
 
 class DocManager(object):
-    def __init__(self, resources):
-        self._resources = resources
-
     def make_pending(self, doc):
+        resources = ResourceManager(res_type=doc.client.type)
+
         doc_dir_path = _prepare_dir(DOC_PATH, DocState.PENDING)
         pdf_dir_path = _prepare_dir(PDF_PATH, DocState.PENDING)
 
         _write_doc_to_yaml(doc_dir_path, doc)
 
         pdf_path = os.path.join(pdf_dir_path, _create_doc_pdf_name(doc.number))
-        writer = PdfWriter(self._resources, pdf_path, doc)
+        writer = PdfWriter(resources, pdf_path, doc)
         writer.write()
 
         print("%s was created" % doc.number)

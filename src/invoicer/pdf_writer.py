@@ -3,6 +3,7 @@ from reportlab.lib.pagesizes import A4
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from model import *
+from resource import ResourceType
 import os
 
 
@@ -126,7 +127,8 @@ class PdfWriter(object):
 
         self._y -= 5
         self._write_formatted_string('ico', self.document.contractor.ico)
-        self._write_formatted_string('dic', self.document.contractor.dic)
+        if self.document.client.type != ResourceType.EN:
+            self._write_formatted_string('dic', self.document.contractor.dic)
         if self.document.client.is_foreign():
             self._write_formatted_string('icdph', self.document.contractor.icdph)
             self._change_font(size=8)
@@ -169,8 +171,9 @@ class PdfWriter(object):
 
         self._change_font()
         self._y -= (height + 5)
-        self._write_formatted_string('ico', self.document.client.ico)
-        self._write_formatted_string('dic', self.document.client.dic)
+        if self.document.client.type != ResourceType.EN:
+            self._write_formatted_string('ico', self.document.client.ico)
+            self._write_formatted_string('dic', self.document.client.dic)
         self._write_formatted_string('icdph', self.document.client.icdph)
 
     def _write_dates(self, width):

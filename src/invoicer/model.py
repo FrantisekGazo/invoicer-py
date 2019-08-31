@@ -66,6 +66,7 @@ class Contractor(object):
 
 class Client(object):
     def __init__(self, data):
+        self.type = data.get('type', None)
         self.name = data['name']
         self.order = data.get('order', 0)
         self.address = data['address']
@@ -136,11 +137,6 @@ class Item(object):
 
     def total(self):
         return self.amount * self.price
-
-
-class Unit(object):
-    KS = 'ks'
-    HOUR = 'hod'
 
 
 #####################################################################################

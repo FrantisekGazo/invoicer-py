@@ -7,7 +7,7 @@ HOUR_CHARACTER = 'h'
 def parse(file_path):
     records = []
 
-    with open(file_path, 'rb') as csvfile:
+    with open(file_path, 'rt') as csvfile:
         rows = csv.reader(csvfile, delimiter=' ', quotechar='|')
         current_client = ''
         for row in rows:

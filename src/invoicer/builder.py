@@ -29,7 +29,7 @@ class DocumentBuilder(object):
 
         # create temporary documents and sort them base on client order
         temp_docs = []
-        for (client_key, client) in self.base.clients.iteritems():
+        for (client_key, client) in self.base.clients.items():
             items = self._find_items(records, client)
             if items is None:
                 continue
@@ -104,7 +104,7 @@ class DocumentBuilder(object):
 
         for record in records:
             if isinstance(record, PriceRecord) or isinstance(record, HoursRecord):
-                for (_, project) in client.projects.iteritems():
+                for (_, project) in client.projects.items():
                     if record.project_name in project.aliases:
                         items.append(self._map_record_to_item(project, record, resources))
                         used_records.append(record)
@@ -168,7 +168,7 @@ class DocumentBuilder(object):
             else:
                 items_map[item.name] = item
 
-        return items_map.values()
+        return list(items_map.values())
 
 
 class TempDoc(object):

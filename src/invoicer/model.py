@@ -44,11 +44,11 @@ class Base(object):
         self.default_curremcy = Currency.for_name(data['default_curremcy'])
         self.default_bank_account_name = data['default_bank_account']
         self.bank_accounts = {}
-        for (acc_name, acc_data) in data['bank_accounts'].iteritems():
+        for (acc_name, acc_data) in data['bank_accounts'].items():
             self.bank_accounts[acc_name] = BankAccount(acc_data)
 
         self.clients = {}
-        for (client_name, client_data) in data['clients'].iteritems():
+        for (client_name, client_data) in data['clients'].items():
             self.clients[client_name] = Client(client_data)
 
 
@@ -75,7 +75,7 @@ class Client(object):
         self.icdph = data['icdph']
         self.price = data['price']
         self.projects = {}
-        for (project_name, project_data) in data.get('projects', {}).iteritems():
+        for (project_name, project_data) in data.get('projects', {}).items():
             self.projects[project_name] = Project(project_name, project_data, default_price=self.price)
 
     def is_foreign(self):

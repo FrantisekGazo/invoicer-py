@@ -37,7 +37,7 @@ setup(
         ]
     },
     install_requires=[  # list of this package dependencies
-        'pyyaml==3.12',
+        'pyyaml==5.1',
         'reportlab==3.4.0',
     ],
     entry_points='''

@@ -1,5 +1,6 @@
 import argparse
 
+from datetime import datetime
 from util import load_yaml
 from resource import ResourceManager
 from builder import DocumentBuilder
@@ -8,7 +9,7 @@ import input_parser
 import os
 
 
-def run():
+def run(date=None):
     doc_manager = DocManager()
     latest_doc_name = doc_manager.get_latest_doc_name()
 
@@ -18,7 +19,7 @@ def run():
 
     # prepare documents
     builder = DocumentBuilder(load_yaml('base.yaml'), latest_doc_name)
-    docs = builder.build(records)
+    docs = builder.build(records, date=date)
 
     # create documents
     doc_manager.clear_pending()
@@ -40,6 +41,8 @@ def main(debug=False):
     parser = argparse.ArgumentParser()
     parser.add_argument('-r', '--run', action='store_true',
                         help="Create new documents")
+    parser.add_argument('-rt', '--run-today', action='store_true',
+                        help="Create new documents with today date")
     parser.add_argument('-s', '--sent', action='store_true',
                         help="Move the document with given number to the sent state")
     parser.add_argument('-p', '--paid', action='store_true',
@@ -49,6 +52,8 @@ def main(debug=False):
     ResourceManager.debug = debug
     if args.run:
         run()
+    if args.run_today:
+        run(date=datetime.now())
     elif args.sent:
         sent()
     elif args.paid:

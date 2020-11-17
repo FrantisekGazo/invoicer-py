@@ -17,13 +17,18 @@ class DocumentBuilder(object):
         self.base = Base(base)
         self.latest_doc_name = latest_doc_name
 
-    def build(self, records, date=None):
-        if date is None:
+    def build(self, records, delivery_date=None, due_eom=False):
+        if delivery_date is None:
             today = datetime.now()
             if today.day < 15:
-                date = _last_day_of_previous_month(today)
+                delivery_date = _last_day_of_previous_month(today)
             else:
-                date = _last_day_of_month(today)
+                delivery_date = _last_day_of_month(today)
+
+        if due_eom:
+            due_date = _last_day_of_month(delivery_date)
+        else:
+            due_date = delivery_date + timedelta(days=14)
 
         docs = []
 
@@ -44,13 +49,13 @@ class DocumentBuilder(object):
             if len(temp_doc.items) < 1:
                 continue
 
-            doc_name = self._check_format_doc_name(date, len(docs) + 1)
+            doc_name = self._check_format_doc_name(delivery_date, len(docs) + 1)
             docs.append(Document(
                 number=doc_name,
 
-                issue_date=self._format_date(date),
-                delivery_date=self._format_date(date),
-                due_date=self._format_date(date + timedelta(days=14)),
+                issue_date=self._format_date(delivery_date),
+                delivery_date=self._format_date(delivery_date),
+                due_date=self._format_date(due_date),
 
                 contractor=self.base.contractor,
                 currency=self.base.default_curremcy,

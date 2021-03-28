@@ -41,7 +41,7 @@ class Base(object):
     def __init__(self, data):
         self.contractor = Contractor(data)
         self.numbering = data['numbering']
-        self.default_curremcy = Currency.for_name(data['default_curremcy'])
+        self.default_currency = Currency.for_name(data['default_currency'])
         self.default_bank_account_name = data['default_bank_account']
         self.bank_accounts = {}
         for (acc_name, acc_data) in data['bank_accounts'].items():

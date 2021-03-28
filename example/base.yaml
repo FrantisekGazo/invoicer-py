@@ -16,7 +16,7 @@ numbering: "YYYYccc"
 
 signature: "signature.png"
 
-default_curremcy: "EUR"
+default_currency: "EUR"
 default_bank_account: "acc1"
 bank_accounts:
   acc1:

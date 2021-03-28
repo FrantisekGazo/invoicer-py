@@ -58,7 +58,7 @@ class DocumentBuilder(object):
                 due_date=self._format_date(due_date),
 
                 contractor=self.base.contractor,
-                currency=self.base.default_curremcy,
+                currency=self.base.default_currency,
                 bank_account=self.base.bank_accounts[self.base.default_bank_account_name],
 
                 client=temp_doc.client,

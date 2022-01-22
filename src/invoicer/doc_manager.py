@@ -63,7 +63,7 @@ class DocManager(object):
 
     def get_doc_numbers_from(self, state):
         doc_path = _prepare_dir(DOC_PATH, state)
-        doc_numbers = [_strip_yaml_from_name(f) for f in os.listdir(doc_path)]
+        doc_numbers = [_strip_yaml_from_name(f) for f in os.listdir(doc_path) if (f.endswith(YAML_EXTENSION))]
         return doc_numbers
 
 

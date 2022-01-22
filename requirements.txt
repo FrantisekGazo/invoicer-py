@@ -1,2 +1,2 @@
-pyyaml==3.12
-reportlab==3.4.0
+pyyaml==5.4.1
+reportlab==3.5.67
